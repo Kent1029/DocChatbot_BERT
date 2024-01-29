@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-blue-200 flex justify-center items-center h-screen">
+    <div class="bg-white p-10 rounded-lg shadow-lg">
+        <ul>
+            {% for filename in filenames %}
+                <li>{{ loop.index }}.
+                  <a href="{{ url_for('static', filename=filename) }}" class="text-blue-600 underline">{{ filename }}</a>
+                  (<a href="/text/{{ filename }}" class="text-blue-600 underline">Plain text version</a>)
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
