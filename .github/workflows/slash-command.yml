@@ -1,1 +1,34 @@
+name: Auto reply and Slash Command Dispatch
 
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  auto-reply-and-slash-command-dispatch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Auto reply
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.NGH_PAT }}
+        script: |
+          const issueComment = context.payload.comment;
+          const issue = context.payload.issue;
+          const repo = context.repo;
+          if (issueComment.user.login === 'github-actions[bot]' || issueComment.user.login === 'Kent1029') {
+            return;
+          }
+          github.issues.createComment({
+            owner: repo.owner,
+            repo: repo.repo,
+            issue_number: issue.number,
+            body: '感謝你的評論！我們會儘快回覆。'
+          });
+    - name: Slash Command Dispatch
+      uses: peter-evans/slash-command-dispatch@v3
+      with:
+        token: ${{ secrets.NGH_PAT }}
+        commands: |
+          format
+        reactions: eyes
